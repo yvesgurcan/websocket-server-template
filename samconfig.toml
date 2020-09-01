@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "websocket-template1"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1buqg7r2830lt"
+s3_prefix = "websocket-template1"
+region = "us-west-2"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "AppBucketName=\"websocket-client1\""
+

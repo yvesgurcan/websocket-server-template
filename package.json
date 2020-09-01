@@ -1,0 +1,13 @@
+{
+  "name": "websocket-client",
+  "description": "websocket-client",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "aws-sdk": "^2.442.0"
+  },
+  "devDependencies": {
+    "aws-sdk-mock": "^4.5.0"
+  },
+  "scripts": {}
+}

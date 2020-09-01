@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  websocket-template
+
+Parameters:
+  ObjectAppURL:
+    Type: String
+    Description: "REQUIRED: URL of bundled application."
+    Default: https://raw.githubusercontent.com/Twenty-Four-7-Web-Dev/websocket-template/master/client/index.html
+  BucketAppName:
+    Type: String
+    Description: "REQUIRED: Unique S3 bucket name to use for the application client."
+
+Resources:
+  BucketApp:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketAppName
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+    DeletionPolicy: Retain
+  PolicyBucketApp:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      PolicyDocument:
+        Id: PolicyBucketWebSocketApp
+        Version: 2012-10-17
+        Statement:
+          - Sid: PublicReadForGetBucketObjects
+            Effect: Allow
+            Principal: "*"
+            Action: "s3:GetObject"
+            Resource: !Join
+              - ""
+              - - "arn:aws:s3:::"
+                - !Ref BucketApp
+                - /*
+      Bucket: !Ref BucketApp
+
+Outputs:
+  WebsiteURL:
+    Value: !GetAtt
+      - BucketApp
+      - WebsiteURL
+    Description: URL of the website hosted on S3.
+  S3BucketSecureURL:
+    Value: !Join
+      - ""
+      - - "https://"
+        - !GetAtt
+          - BucketApp
+          - DomainName
+    Description: Name of the S3 bucket holding website content.
