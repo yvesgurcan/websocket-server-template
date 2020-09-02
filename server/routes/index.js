@@ -2,7 +2,12 @@ const cors = require('cors');
 const express = require('express');
 const router = express.Router();
 
-router.all('*', cors());
+router.all(
+    '*',
+    cors({
+        origin: 'http://http://localhost:3000/'
+    })
+);
 
 router.get('/', (req, res) => {
     console.log('I am alive');
