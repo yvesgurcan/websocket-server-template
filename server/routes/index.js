@@ -11,6 +11,7 @@ router.all(
             if (
                 [
                     'http://localhost:3000',
+                    'http://localhost:3001',
                     'http://bbt-client-bucket.s3-website-us-west-2.amazonaws.com',
                     'http://bbt-remote-bucket.s3-website-us-west-2.amazonaws.com'
                 ].indexOf(origin) === -1
