@@ -1,26 +1,36 @@
-const express = require('express')
-const http = require('http')
-const socketIo = require('socket.io')
+const express = require('express');
+const http = require('http');
+const socketIo = require('socket.io');
 
-const port = process.env.PORT || 4000
-const index = require('./routes/index')
+const port = process.env.PORT || 4000;
+const index = require('./routes/index');
 
-const app = express()
-app.use(index)
+const app = express();
+app.use(index);
 
-const server = http.createServer(app)
-const io = socketIo(server)
+// CORS
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header(
+        'Access-Control-Allow-Headers',
+        'Origin, X-Requested-With, Content-Type, Accept'
+    );
+    next();
+});
 
-io.on('connection', (socket) => {
-  console.log('new socket', socket.id)
-  socket.on('new mode', (mode) => {
-    console.log('new mode', mode)
-    io.emit('new mode', { mode: mode.name, buttons: mode.buttons })
-  })
-  socket.on('button press', (button) => {
-    console.log('button press', button)
-    io.emit('button press', button)
-  })
-})
+const server = http.createServer(app);
+const io = socketIo(server);
 
-server.listen(port, () => console.log(`Listening on port ${port}`))
+io.on('connection', socket => {
+    console.log('new socket', socket.id);
+    socket.on('new mode', mode => {
+        console.log('new mode', mode);
+        io.emit('new mode', { mode: mode.name, buttons: mode.buttons });
+    });
+    socket.on('button press', button => {
+        console.log('button press', button);
+        io.emit('button press', button);
+    });
+});
+
+server.listen(port, () => console.log(`Listening on port ${port}`));
