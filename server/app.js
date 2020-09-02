@@ -10,6 +10,8 @@ app.use(index);
 
 // CORS
 app.use(function (req, res, next) {
+    console.log(req);
+    console.log('Request intercepted.');
     res.header('Access-Control-Allow-Origin', '*');
     res.header(
         'Access-Control-Allow-Headers',
