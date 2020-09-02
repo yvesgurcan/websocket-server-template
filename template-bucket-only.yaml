@@ -4,24 +4,24 @@ Description: >
   websocket-template
 
 Parameters:
-  BundleAppClientURL:
+  ObjectAppURL:
     Type: String
-    Description: "REQUIRED: URL of bundled client application."
+    Description: "REQUIRED: URL of bundled application."
     Default: https://raw.githubusercontent.com/Twenty-Four-7-Web-Dev/websocket-template/master/client/index.html
-  BucketAppClientName:
+  BucketAppName:
     Type: String
     Description: "REQUIRED: Unique S3 bucket name to use for the application client."
 
 Resources:
-  BucketAppClient:
+  BucketApp:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Ref BucketAppClientName
+      BucketName: !Ref BucketAppName
       AccessControl: PublicRead
       WebsiteConfiguration:
         IndexDocument: index.html
     DeletionPolicy: Retain
-  PolicyBucketAppClient:
+  PolicyBucketApp:
     Type: AWS::S3::BucketPolicy
     Properties:
       PolicyDocument:
@@ -35,26 +35,14 @@ Resources:
             Resource: !Join
               - ""
               - - "arn:aws:s3:::"
-                - !Ref BucketAppClient
+                - !Ref BucketApp
                 - /*
-      Bucket: !Ref BucketAppClient
-  LambdaAppServer:
-    Type: AWS::Serverless::Function
-    Properties:
-      Handler: index.handler
-      Runtime: nodejs12.x
-      # Policies: AmazonDynamoDBFullAccess
-      Events:
-        HttpGetEvent:
-          Type: Api
-          Properties:
-            Method: get
-            Path: /
+      Bucket: !Ref BucketApp
 
 Outputs:
   WebsiteURL:
     Value: !GetAtt
-      - BucketAppClient
+      - BucketApp
       - WebsiteURL
     Description: URL of the website hosted on S3.
   S3BucketSecureURL:
@@ -62,6 +50,6 @@ Outputs:
       - ""
       - - "https://"
         - !GetAtt
-          - BucketAppClient
+          - BucketApp
           - DomainName
     Description: Name of the S3 bucket holding website content.
