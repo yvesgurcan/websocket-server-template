@@ -5,7 +5,7 @@ const router = express.Router();
 router.all(
     '*',
     cors({
-        origin: 'http://http://localhost:3000/'
+        origin: 'http://localhost:3000/'
     })
 );
 
