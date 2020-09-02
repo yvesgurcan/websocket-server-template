@@ -8,23 +8,6 @@ const index = require('./routes/index');
 const app = express();
 app.use(index);
 
-// CORS
-app.use(function (req, res, next) {
-    console.log(req);
-    console.log('Request intercepted.');
-    res.header('Access-Control-Allow-Origin', '*');
-    res.header(
-        'Access-Control-Allow-Headers',
-        'Origin, X-Requested-With, Content-Type, Accept, authorization'
-    );
-    res.header(
-        'Access-Control-Allow-Methods',
-        'GET, POST, OPTIONS, PUT, DELETE'
-    );
-    next();
-    next();
-});
-
 const server = http.createServer(app);
 const io = socketIo(server);
 
